@@ -32,15 +32,25 @@ class Unity_Dsr2_msg(Node):
 
     def convert_twist_to_speedl(self, twist):
         msg = SpeedlRtStream()
-        msg.vel = [twist.linear.x, twist.linear.y, twist.linear.z,
-                   twist.angular.x, twist.angular.y, twist.angular.z]
+        msg.vel = [min(self.convert_m_s_to_mm_s(twist.linear.x), 250), 
+                   min(self.convert_m_s_to_mm_s(twist.linear.y), 250), 
+                   min(self.convert_m_s_to_mm_s(twist.linear.z), 250),
+                   min(self.convert_rad_s_to_deg_s(twist.angular.x), 120), 
+                   min(self.convert_rad_s_to_deg_s(twist.angular.y), 120), 
+                   min(self.convert_rad_s_to_deg_s(twist.angular.z), 120)]
         msg.acc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        msg.time = 0.1
+        msg.time = 0.04
         return msg
     
     def twist_callback(self, msg):
         speedl_msg = self.convert_twist_to_speedl(msg)
         self.speedl_rt_publisher.publish(speedl_msg)
+
+    def convert_rad_s_to_deg_s(self, rad_s):
+        return rad_s * (180.0 / 3.14159)
+    
+    def convert_m_s_to_mm_s(self, m_s):
+        return m_s * 1000.0
 
 def main(args=None):
     rclpy.init(args=args)

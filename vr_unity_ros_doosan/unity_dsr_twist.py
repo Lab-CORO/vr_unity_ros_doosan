@@ -25,6 +25,7 @@ from geometry_msgs.msg import Twist
 class Unity_Dsr2_msg(Node):
     def __init__(self):
         super().__init__('unity_dsr2_msg_node')
+
         # Initialisation du publisher
         self.speedl_rt_publisher = self.create_publisher(SpeedlRtStream, '/dsr01/speedl_rt_stream', 10)
         # Initialisation du subscriber
@@ -32,13 +33,16 @@ class Unity_Dsr2_msg(Node):
 
     def convert_twist_to_speedl(self, twist):
         msg = SpeedlRtStream()
-        msg.vel = [min(self.convert_m_s_to_mm_s(twist.linear.x), 250), 
-                   min(self.convert_m_s_to_mm_s(twist.linear.y), 250), 
-                   min(self.convert_m_s_to_mm_s(twist.linear.z), 250),
-                   min(self.convert_rad_s_to_deg_s(twist.angular.x), 120), 
-                   min(self.convert_rad_s_to_deg_s(twist.angular.y), 120), 
-                   min(self.convert_rad_s_to_deg_s(twist.angular.z), 120)]
+        msg.vel = [max(min(twist.linear.x*1000, 250),-250),
+                   max(min(twist.linear.y*1000, 250),-250),
+                   max(min(twist.linear.z*1000, 250),-250),
+                   max(min(twist.angular.x*(180.0 / 3.14159), 120),-120),
+                   max(min(twist.angular.y*(180.0 / 3.14159), 120),-120), 
+                   max(min(twist.angular.z*(180.0 / 3.14159), 120),-120)]
         msg.acc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+         # 0.04 corresponds to the message frequency of a previous Carl's project. 
+         # This value could potentially be lowered, but 0.04s is working just fine.
         msg.time = 0.04
         return msg
     
@@ -46,11 +50,6 @@ class Unity_Dsr2_msg(Node):
         speedl_msg = self.convert_twist_to_speedl(msg)
         self.speedl_rt_publisher.publish(speedl_msg)
 
-    def convert_rad_s_to_deg_s(self, rad_s):
-        return rad_s * (180.0 / 3.14159)
-    
-    def convert_m_s_to_mm_s(self, m_s):
-        return m_s * 1000.0
 
 def main(args=None):
     rclpy.init(args=args)

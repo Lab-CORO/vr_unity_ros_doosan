@@ -20,6 +20,9 @@ def generate_launch_description():
             output='screen'  
         ),
     
+        # Starts the TCP server node for Unity <-> ROS2 communication
+        # ROS_IP: 0.0.0.0 = Accept connections from any device on the network
+        # ROS_TCP_PORT: 10000 => Default port used for incoming Unity connections
         Node(
             package='ros_tcp_endpoint',
             executable='default_server_endpoint',

@@ -1,3 +1,27 @@
+# -----------------------------------------------------------------------------
+# ROS 2 Node: PauseResumeTopicBridge
+#
+# Description:
+# This ROS 2 node acts as a bridge between a Unity simulation and the doosan's 
+# motion control services. It listens for Boolean messages published on the 
+# topic `/unity/UnityPauseResume`. Depending on the message content, it sends 
+# a request to either pause or resume the robot's motion. This node is used
+# as Deadman switch similar to the Doosan robot. 
+#
+# Functionality:
+# - If the received message is 'False', the node sends a request to the 
+#   '/dsr01/motion/move_pause' service to pause the robot.
+# - If the received message is 'True', the node sends a request to the 
+#   '/dsr01/motion/move_resume' service to resume the robot.
+#
+# Services:
+# - /dsr01/motion/move_pause (type: dsr_msgs2/srv/MovePause)
+# - /dsr01/motion/move_resume (type: dsr_msgs2/srv/MoveResume)
+#
+# The node handles service responses asynchronously and logs the result of 
+# each command.
+# -----------------------------------------------------------------------------
+
 import rclpy
 from rclpy.node import Node
 

@@ -37,11 +37,24 @@ Specific information if you're trying this project from a clean install.
 
 These are the commands you might want to run.
 
-### Roslaunch
+### vr_realtime.launch
 
-- **vr_realtime.launch**: Starts the nodes responsbible for the conversion of units from Unity to the Doosan Robot: `unity_dsr_twist & unity_dsr_jointspeed`. Enables real-time communication between the Unity VR interface and ROS2 with the `TCP server`.
+**Purpose**  
+Launches all required ROS 2 nodes for real-time communication between the Unity VR interface and a Doosan robot.
 
-### Example
+**Included Nodes**  
+- `unity_dsr_twist`: Converts velocity commands from Unity into robot-compatible Twist messages.  
+- `unity_dsr_jointspeed`: Handles joint speed commands coming from Unity.  
+- `pause_resume_doosan`: Acts as a **Deadman Switch**, similar to a teach pendant. Pauses or resumes the robot based on input from Unity (e.g., controller trigger held or released).  
+- `tcp_server`: Establishes a TCP connection between Unity and ROS 2 for data exchange.
+
+**Functionality**  
+This launch file enables:
+- Real-time robot control using Unity-based VR interfaces.  
+- Safe operation through a Deadman Switch mechanism.  
+- Seamless conversion of Unity inputs to Doosan robot motion commands.
+
+### Execution Steps
 
 Launch the various ROS components needed for real-time manipulation using the following commands in multiple command windows:
 

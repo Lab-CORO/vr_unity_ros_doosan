@@ -19,6 +19,13 @@ def generate_launch_description():
             name='unity_dsr_jointspeed',
             output='screen'  
         ),
+
+        Node(
+            package='vr_unity_ros_doosan',
+            executable='pause_resume_doosan',
+            name='pause_resume_doosan',
+            output='screen'  
+        ),
     
         # Starts the TCP server node for Unity <-> ROS2 communication
         # ROS_IP: 0.0.0.0 = Accept connections from any device on the network

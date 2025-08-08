@@ -26,6 +26,7 @@ setup(
         'console_scripts': [
             'unity_dsr_twist = vr_unity_ros_doosan.unity_dsr_twist:main',
             'unity_dsr_jointspeed = vr_unity_ros_doosan.unity_dsr_jointspeed:main',
+            'pause_resume_doosan = vr_unity_ros_doosan.pause_resume_doosan:main'
         ],
     },
 )

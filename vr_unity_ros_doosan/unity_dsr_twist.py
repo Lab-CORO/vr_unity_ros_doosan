@@ -36,9 +36,9 @@ class Unity_Dsr2_msg(Node):
         msg.vel = [max(min(twist.linear.x*1000, 250),-250),
                    max(min(twist.linear.y*1000, 250),-250),
                    max(min(twist.linear.z*1000, 250),-250),
-                   max(min(twist.angular.x*(180.0 / 3.14159), 120),-120),
-                   max(min(twist.angular.y*(180.0 / 3.14159), 120),-120), 
-                   max(min(twist.angular.z*(180.0 / 3.14159), 120),-120)]
+                   max(min(twist.angular.x*(180.0 / 3.14159), 30),-30),
+                   max(min(twist.angular.y*(180.0 / 3.14159), 30),-30), 
+                   max(min(twist.angular.z*(180.0 / 3.14159), 30),-30)]
         msg.acc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
          # 0.04 corresponds to the message frequency of a previous Carl's project. 

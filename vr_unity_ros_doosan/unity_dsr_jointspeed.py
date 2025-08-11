@@ -24,22 +24,15 @@ class Unity_Dsr2_msg(Node):
 
     def convert_twist_to_speedl(self, jointspeed):
         msg = SpeedjRtStream()
-        msg.vel = [self.convert_rad_s_to_deg_s(jointspeed.data[0]),
-                   self.convert_rad_s_to_deg_s(jointspeed.data[1]), 
-                   self.convert_rad_s_to_deg_s(jointspeed.data[2]),
-                   self.convert_rad_s_to_deg_s(jointspeed.data[3]), 
-                   self.convert_rad_s_to_deg_s(jointspeed.data[4]), 
-                   self.convert_rad_s_to_deg_s(jointspeed.data[5])]
+        msg.vel = [max(min(jointspeed.data[0]*(180.0 / 3.14159), 120),-120),
+                   max(min(jointspeed.data[1]*(180.0 / 3.14159), 120),-120),
+                   max(min(jointspeed.data[2]*(180.0 / 3.14159), 120),-120),
+                   max(min(jointspeed.data[3]*(180.0 / 3.14159), 225),-225),
+                   max(min(jointspeed.data[4]*(180.0 / 3.14159), 225),-225), 
+                   max(min(jointspeed.data[5]*(180.0 / 3.14159), 225),-225)]
         msg.acc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        msg.time = 0.04
+        msg.time = 0.01
         return msg
-    
-    def joint_callback(self, msg):
-        speedj_msg = self.convert_twist_to_speedl(msg)
-        self.speedj_rt_publisher.publish(speedj_msg)
-
-    def convert_rad_s_to_deg_s(self, rad_s):
-        return rad_s * (180.0 / 3.14159)
 
 def main(args=None):
     rclpy.init(args=args)

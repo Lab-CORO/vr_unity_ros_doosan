@@ -31,7 +31,7 @@ class Unity_Dsr2_msg(Node):
                    max(min(jointspeed.data[4]*(180.0 / 3.14159), 225),-225), 
                    max(min(jointspeed.data[5]*(180.0 / 3.14159), 225),-225)]
         msg.acc = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        msg.time = 0.01
+        msg.time = 0.2
         return msg
 
 def main(args=None):
